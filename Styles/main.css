@@ -1,0 +1,19 @@
+.east_teams{
+	text-align: center;
+}
+.west_teams{
+	text-align: center;
+}
+.divisions_names{
+	font-size: 30px;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+.input_zip{
+	margin: 0;
+    padding: 0;
+    display:inline-block;
+}
+.roster{
+	text-align: center;
+}
