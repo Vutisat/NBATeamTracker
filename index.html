@@ -25,7 +25,7 @@
 				alert("Please enter a numeric value.");
 			}
 			if(num.toString().length != 5){
-				alert("A valid zipcode have 5 digits");
+				alert("A valid zipcode conatins 5 digits!");
 			}
 
 			getZipInfo(num);
@@ -34,9 +34,10 @@
 			document.getElementById("zip").value = num
 			response = ""
 
+				//This function calls an API to interpret the ZIP code for information
 				function getZipInfo(input_zip){
 								var zip_api = ("https://www.zipcodeapi.com/rest/js-U8EC3iiDDZSpUxdbJI02DXbm7h9ZmtngC1SGkbkXacn5JBgtjhvXfHjmYtmlWJBz/info.json/" + input_zip + "/degrees");
-								console.log(zip_api);
+								//console.log(zip_api);
 								$.ajax({
 								    type: "GET",
 								    crossDomain: true,
@@ -49,18 +50,48 @@
 
 								function processData(data)
 								{	
+									//console.log(data);
+									//var obj = JSON.parse(data);
+									var obj = JSON.stringify(data);
+									var obj2 = JSON.parse(obj);
+				
+
+									//Got the state info, now calling lambda
+								    state = obj2.state
+								    console.log(state);
+								    callLambda(obj2);
+								}
+				}
+
+				//Lambda Function finds the team by state
+				function callLambda(state){
+
+					var lambda_endpoint = ("https://uq3v5l2ll5.execute-api.us-east-1.amazonaws.com/prod/getLocalNBATeam");
+								console.log(lambda_endpoint);
+								$.ajax({
+								    type: "GET",
+								    crossDomain: true,
+								    url: lambda_endpoint,
+								    data: {"key1":state},
+								    dataType: "json",
+								    success: processData2,
+								    error: function(){ alert("Something went wrong while calling the lambda function");; }
+					});
+
+					//Got the state from lambda, now going to display map and show team
+					function processData2(data)
+								{	
 									console.log(data);
 									//var obj = JSON.parse(data);
 									var obj = JSON.stringify(data);
 									var obj2 = JSON.parse(obj);
 
 									console.log(obj2);
+									//TODO
 
-									//The following creates html to display the players
-								    state = obj2.state
-								    console.log(state);
-								}
-							}
+					}
+
+				}
 
 			}
 			// End -->
@@ -75,12 +106,9 @@
 	
 		<div class="Divisions">
 
-			<div id="cont1" style="visibility: hidden;"> Your team is: 
-		 	</div>
-
 			<ul>
 				<div class="east_teams col-sm-12">
-				<center><p style="font-size: 50px;"><strong>Enter a zipcode for nearest team or pick a team!</strong></p></center>
+				<center><p style="font-size: 50px;"><strong>Enter a zipcode to find your state's favourite team or pick a team!</strong></p></center>
 
 				<div class="input_zip">
 				<center><p style="font-size: 40px;"><strong>Zip Code:</strong></p></center>
@@ -93,6 +121,10 @@
 						</FORM>
 						<FORM>
 				</FORM>
+				</div>
+
+				<div class"local_team">
+					<!-- result from API call to lambda to find state's team will go here -->
 				</div>
 
 				<center><p style="font-size: 50px; color:blue;"><strong>EASTERN CONFERENCE</strong></p></center>
@@ -149,8 +181,6 @@
 
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-		<!-- Include all compiled plugins (below), or include individual files as needed -->
-		<script src="js/bootstrap.min.js"></script>
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	</body>
