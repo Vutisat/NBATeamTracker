@@ -123,9 +123,9 @@ function getTeam() {
 		function generate_kml(lang, long){
 			full_kml = '<?xml version="1.0" encoding="UTF-8"?>\n';
 			full_kml += '	<kml xmlns="http://www.opengis.net/kml/2.2">\n'
-			full_kml += '	<Placemark> \n				   <name>Simple placemark</name>\n				    <description>This is the location from the zip code entered</description> \n				    <Point>';
+			full_kml += '	<Placemark> \n		 <name>Simple placemark</name>\n 		<description>This is the location from the zip code entered</description> \n 	<Point>';
 			full_kml +=	 '<coordinates>' + latitude + ',' + longitude + ',0</coordinates>\n'
-			full_kml += '			    </Point>\n	</Placemark>\n</kml>';
+			full_kml += ' 	</Point>\n	</Placemark>\n</kml>';
 			console.log("KML generated: \n" + full_kml);
 
 			//This following generate a button for users to download the KML
