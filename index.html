@@ -65,29 +65,44 @@
 
 				//Lambda Function finds the team by state
 				function callLambda(state){
+					//------------
+						xhr = new XMLHttpRequest();
+						var url = "https://uq3v5l2ll5.execute-api.us-east-1.amazonaws.com/prod/getLocalNBATeam";
+						xhr.open("POST", url, true);
+						xhr.setRequestHeader("Content-type", "application/json");
+						xhr.onreadystatechange = function () { 
+						    if (xhr.readyState == 4 && xhr.status == 200) {
+						        var json = JSON.parse(xhr.responseText);
+						        console.log(json)
+						    }
+						}
+						var data = JSON.stringify({"key1":"CA"});
+						xhr.send(data);
+					//------------
 
-					var lambda_endpoint = ("https://uq3v5l2ll5.execute-api.us-east-1.amazonaws.com/prod/getLocalNBATeam");
-								console.log(lambda_endpoint);
-								$.ajax({
-								    type: "GET",
-								    crossDomain: true,
-								    url: lambda_endpoint,
-								    data: {"key1":state},
-								    dataType: "json",
-								    success: processData2,
-								    error: function(){ alert("Something went wrong while calling the lambda function");; }
-					});
+					// var lambda_endpoint = ("https://uq3v5l2ll5.execute-api.us-east-1.amazonaws.com/prod/getLocalNBATeam");
+					// 			console.log(lambda_endpoint);
+					// 			$.ajax({
+					// 			    type: "POST",
+					// 			    crossDomain: true,
+					// 			    url: lambda_endpoint,
+					// 			    data: { key1:"CA"},
+					// 			    dataType: "text",
+					// 			    success: processData2,
+					// 			    error: function(){ alert("Something went wrong while calling the lambda function");; }
+					// });
 
 					//Got the state from lambda, now going to display map and show team
 					function processData2(data)
 								{	
 									console.log(data);
 									//var obj = JSON.parse(data);
-									var obj = JSON.stringify(data);
-									var obj2 = JSON.parse(obj);
+									//var obj = JSON.stringify(data);
+									//var obj2 = JSON.parse(obj);
 
-									console.log(obj2);
+									//console.log(obj2);
 									//TODO
+
 
 					}
 
