@@ -5,7 +5,6 @@ function getTeam() {
 	//httpReq.setRequestHeader('Access-Control-Allow-Headers', '*');
 	var response
 	var num = parseInt(document.getElementById("zip").value)
-
 	//alert(num.length);
 	//Error Checking
 	if(isNaN(num)){
@@ -37,7 +36,8 @@ function getTeam() {
 
 						function processData(data)
 						{	
-							console.log("Here's the location result from the ZIP code: " + data);
+							console.log("Here's the location result from the ZIP code: ");
+							console.log(data);
 							//var obj = JSON.parse(data);
 							var obj = JSON.stringify(data);
 							var obj2 = JSON.parse(obj);
@@ -75,37 +75,55 @@ function getTeam() {
 		//------------
 
 		function build_team_string(team){
+			download('test.txt', 'Hello world!');
 			if(team == "ATL"){
-				$("#local_team").html("The most popular team in " + state +" is: <a href="ATL.html"> The Atlanta Hawks!</a>");
+				$("#local_team").html("The most popular team in " + state +' is: <a href="ATL.html"> The Atlanta Hawks!</a>');
 			}else if(team == "BOS"){
-				$("#local_team").html("The most popular team in " + state +" is: <a href="BOS.html"> The Boston Celtics!</a>");
+				$("#local_team").html("The most popular team in " + state +' is: <a href="BOS.html"> The Boston Celtics!</a>');
 			}else if(team == "CHA"){
-				$("#local_team").html("The most popular team in " + state +" is: <a href="CHA.html"> The Charlotte Hornets!</a>");
+				$("#local_team").html("The most popular team in " + state +' is: <a href="CHA.html"> The Charlotte Hornets!</a>');
 			}else if(team == "CHI"){
-				$("#local_team").html("The most popular team in " + state +" is: <a href="CHI.html"> The Chicago Bulls!</a>");
+				$("#local_team").html("The most popular team in " + state +' is: <a href="CHI.html"> The Chicago Bulls!</a>');
 			}else if(team == "CLE"){
-				$("#local_team").html("The most popular team in " + state +" is: <a href="CLE.html"> The Cleveland Cavaliers!</a>");
+				$("#local_team").html("The most popular team in " + state +' is: <a href="CLE.html"> The Cleveland Cavaliers!</a>');
 			}else if(team == "DEN"){
-				$("#local_team").html("The most popular team in " + state +" is: <a href="DEN.html"> The Denver Nuggest!</a>");
+				$("#local_team").html("The most popular team in " + state +' is: <a href="DEN.html"> The Denver Nuggest!</a>');
 			}else if(team == "LAL"){
-				$("#local_team").html("The most popular team in " + state +" is: <a href="LAL.html"> The Los Angelis Lakers!</a>");
+				$("#local_team").html("The most popular team in " + state +' is: <a href="LAL.html"> The Los Angelis Lakers!</a>');
 			}else if(team == "MEM"){
-				$("#local_team").html("The most popular team in " + state +" is: <a href="MEM.html"> The Memphis Grizzlies!</a>");
+				$("#local_team").html("The most popular team in " + state +' is: <a href="MEM.html"> The Memphis Grizzlies!</a>');
 			}else if(team == "MIN"){
-				$("#local_team").html("The most popular team in " + state +" is: <a href="MIN.html"> The Minnestoa TimberWolves!</a>");
+				$("#local_team").html("The most popular team in " + state +' is: <a href="MIN.html"> The Minnestoa TimberWolves!</a>');
 			}else if(team == "NOP"){
-				$("#local_team").html("The most popular team in " + state +" is: <a href="NOP.html"> The New Orleans Pelicans!</a>");
+				$("#local_team").html("The most popular team in " + state +' is: <a href="NOP.html"> The New Orleans Pelicans!</a>');
 			}else if(team == "NYK"){
-				$("#local_team").html("The most popular team in " + state +" is: <a href="NYK.html"> The New York Knicks!</a>");
+				$("#local_team").html("The most popular team in " + state +' is: <a href="NYK.html"> The New York Knicks!</a>');
 			}else if(team == "OKC"){
-				$("#local_team").html("The most popular team in " + state +" is: <a href="OKC.html"> The Oklahoma City Thunder!</a>");
+				$("#local_team").html("The most popular team in " + state +' is: <a href="OKC.html"> The Oklahoma City Thunder!</a>');
 			}else if(team == "PHI"){
-				$("#local_team").html("The most popular team in " + state +" is: <a href="PHI.html"> The Philadelphia 76ers!</a>");
+				$("#local_team").html("The most popular team in " + state +' is: <a href="PHI.html"> The Philadelphia 76ers!</a>');
 			}else if(team == "POR"){
-				$("#local_team").html("The most popular team in " + state +" is: <a href="POR.html"> The Portland Trailbrazers!</a>");
+				$("#local_team").html("The most popular team in " + state +' is: <a href="POR.html"> The Portland Trailbrazers!</a>');
 			}else if(team == "UTA"){
-				$("#local_team").html("The most popular team in " + state +" is: <a href="UTA.html"> The Utah Jazz!</a>");
+				$("#local_team").html("The most popular team in " + state +' is: <a href="UTA.html"> The Utah Jazz!</a>');
 			}
+		}
+
+		function generate_kml(lang, long){
+
+		}
+
+		function download(filename, text) {
+		  var element = document.createElement('a');
+		  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+		  element.setAttribute('download', filename);
+
+		  element.style.display = 'none';
+		  document.body.appendChild(element);
+
+		  element.click();
+
+		  document.body.removeChild(element);
 		}
 
 	}
