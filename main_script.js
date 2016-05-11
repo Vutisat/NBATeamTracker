@@ -1,4 +1,3 @@
-
 var state = ""
 var localTeam = ""
 var latitude = ""
@@ -85,6 +84,7 @@ function getTeam() {
 		}
 		//------------
 
+		//This function build the link to insert into the DOM
 		function build_team_string(team){
 			console.log("Generating link to most popular team (" + team +")...")
 			if(team == "ATL"){
@@ -120,6 +120,7 @@ function getTeam() {
 			}
 		}
 
+		//Generate the KML for both view and download
 		function generate_kml(lang, long){
 			full_kml = '<?xml version="1.0" encoding="UTF-8"?>\n';
 			full_kml += '	<kml xmlns="http://www.opengis.net/kml/2.2">\n'
@@ -136,6 +137,7 @@ function getTeam() {
 
 	}
 
+//This is the code that will make the file for you to download
 function download() {
 		  var element = document.createElement('a');
 		  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + full_kml);

@@ -119,9 +119,11 @@
 			    // for FB.getLoginStatus().
 			    if (response.status === 'connected') {
 			      // Logged into your app and Facebook.
+			      ask_perms();
 			      testAPI();
 			    } else if (response.status === 'not_authorized') {
 			      // The person is logged into Facebook, but not your app.
+			      ask_perms();
 			      document.getElementById('status').innerHTML = 'Please log ' +
 			        'into this app.';
 			    } else {
@@ -185,7 +187,7 @@
 			      console.log('Successful login for: ' + response.name);
 			      document.getElementById('status').innerHTML =
 			        'Thanks for logging in, ' + response.name + '!';
-			    });
+			    }, {scope: 'public_profile, email, user_location'});
 
 			    //this is where I make the call to get user location
 					console.log('Welcome!  Fetching your location information.... ');
@@ -217,6 +219,12 @@
 				console.log(googlemap_html);
 				$("#directions").html(googlemap_html);
 			}
+
+			function ask_perms(){
+				FB.login(function(response) {
+								//Asking for location permission
+				}, {scope:'email,user_location'});
+			}
 			</script>
 
 			<!--
@@ -226,10 +234,11 @@
 			-->
 			<p style="font-size: 30px; color:green;"><strong>--- Login to facebook to find directions from your location ---:</strong></p>
 
-			<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+			<fb:login-button scope="public_profile,email,user_location" onlogin="checkLoginState();">
 			</fb:login-button>
 			<div id="status">
 			</div>
+
 
 			<div id="directions">
 				
