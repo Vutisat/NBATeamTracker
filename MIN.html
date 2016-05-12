@@ -1,0 +1,259 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Minneapolis</title>
+		<link rel="stylesheet" href="Styles/main.css">
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+		
+
+		<script>
+			//This function calls the official stats.nba.com API to ge the roster of the team
+			function getRoster(){
+				$.ajax({
+				    type: "GET",
+				    url: "http://stats.nba.com/stats/commonteamroster/?Season=2015-16&TeamID=1610612750",
+				    //They have padding so jsonp works
+				    dataType: "jsonp",
+				    success: processData,
+				    error: function(){ console.log("Something went wrong");; }
+				});
+
+				function processData(data)
+				{	
+					//console.log(data);
+					//var obj = JSON.parse(data);
+					var obj = JSON.stringify(data);
+					//console.log(typeof(obj));
+					var obj2 = JSON.parse(obj);
+
+					//The following creates html to display the players
+				    var playerList = ""
+				    for(i=0; i<12;i++){
+				    	playerList += obj2.resultSets[0].rowSet[i][3] + "<br>"
+				    }
+
+				    //inserting the players into the html
+				    document.getElementById("roster").innerHTML = playerList;
+				}
+			}
+
+			//Let's get the weather of where the Chicago Bulls plays
+			function getWeather(){
+				    var jsonData = {"key":"5032c61cb893a190","field1":12};
+				    var data = JSON.stringify(jsonData);
+				    $.ajax({
+					type: 'GET',
+					url:'http://api.wunderground.com/api/88892b73b5f61627/conditions/q/55403.json',
+					headers: {},
+					data: data,
+					dataType:'json',
+					success:function(data) {
+					    console.log("weather retrieved");
+					    var w = data.current_observation.wind_mph;
+					    var d = data.current_observation.weather;
+					    var t = data.current_observation.temperature_string;
+					    var feel = data.current_observation.feelslike_string;
+					    var icon = data.current_observation.icon_url
+				            document.getElementById("weather").innerHTML = ("<img src= " + icon + " >" + "<br>Weather status is: "+ d + "<br>Temperature is: " + t +" <br>wind speed is: "+ w + "<br>Feels Like: " + feel);
+					    },
+					error:function(data){
+					    console.log("Something went wrong");
+					    }
+					});
+				}				
+
+			window.onload = function() {
+			  getRoster();
+			  getWeather();
+			};
+
+		</script>
+	</head>
+
+	<body>
+		<a href="index.html" style="float:left">
+		<button type="button" class="btn btn-info">&lt; GO BACK TO HOMEPAGE</button>
+		</a>
+
+		<br>
+		<center>
+			<p style="font-size: 50px;"><strong>Minnesota Timbewolves</strong></p>
+		</center>
+		
+		<center><p style="font-size: 30px;"><strong>Current Roster from NBA API:</strong></p></center>
+		<center>
+			<div id="roster">
+				
+			</div>
+			<p style="font-size: 30px;"><strong>Weather at Target Center:</strong></p>
+			<div id="weather">
+				
+			</div>
+		</center>
+		
+		<center>
+
+		<!---The following will be code for facebook oauth-->
+			
+			    <div id="fb-root"></div>
+			<script>(function(d, s, id) {
+			  var js, fjs = d.getElementsByTagName(s)[0];
+			  if (d.getElementById(id)) return;
+			  js = d.createElement(s); js.id = id;
+			  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId=254775014874674";
+			  fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'facebook-jssdk'));</script>
+			 
+			<script>
+			  // This is called with the results from from FB.getLoginStatus().
+			  function statusChangeCallback(response) {
+			    console.log('statusChangeCallback');
+			    console.log(response);
+			    // The response object is returned with a status field that lets the
+			    // app know the current login status of the person.
+			    // Full docs on the response object can be found in the documentation
+			    // for FB.getLoginStatus().
+			    if (response.status === 'connected') {
+			      // Logged into your app and Facebook.
+			      ask_perms();
+			      testAPI();
+			    } else if (response.status === 'not_authorized') {
+			      // The person is logged into Facebook, but not your app.
+			      ask_perms();
+			      document.getElementById('status').innerHTML = 'Please log ' +
+			        'into this app.';
+			    } else {
+			      // The person is not logged into Facebook, so we're not sure if
+			      // they are logged into this app or not.
+			      document.getElementById('status').innerHTML = 'Please log ' +
+			        'into Facebook.';
+			    }
+			  }
+
+			  // This function is called when someone finishes with the Login
+			  // Button.  See the onlogin handler attached to it in the sample
+			  // code below.
+			  function checkLoginState() {
+			    FB.getLoginStatus(function(response) {
+			      statusChangeCallback(response);
+			    });
+			  }
+
+			  window.fbAsyncInit = function() {
+			  FB.init({
+			    appId      : '254775014874674',
+			    cookie     : true,  // enable cookies to allow the server to access 
+			                        // the session
+			    xfbml      : true,  // parse social plugins on this page
+			    version    : 'v2.5' // use graph api version 2.5
+			  });
+
+			  // Now that we've initialized the JavaScript SDK, we call 
+			  // FB.getLoginStatus().  This function gets the state of the
+			  // person visiting this page and can return one of three states to
+			  // the callback you provide.  They can be:
+			  //
+			  // 1. Logged into your app ('connected')
+			  // 2. Logged into Facebook, but not your app ('not_authorized')
+			  // 3. Not logged into Facebook and can't tell if they are logged into
+			  //    your app or not.
+			  //
+			  // These three cases are handled in the callback function.
+
+			  FB.getLoginStatus(function(response) {
+			    statusChangeCallback(response);
+			  });
+
+			  };
+
+			  // Load the SDK asynchronously
+			  (function(d, s, id) {
+			    var js, fjs = d.getElementsByTagName(s)[0];
+			    if (d.getElementById(id)) return;
+			    js = d.createElement(s); js.id = id;
+			    js.src = "//connect.facebook.net/en_US/sdk.js";
+			    fjs.parentNode.insertBefore(js, fjs);
+			  }(document, 'script', 'facebook-jssdk'));
+
+			  // Here we run a very simple test of the Graph API after login is
+			  // successful.  See statusChangeCallback() for when this call is made.
+			  function testAPI() {
+			    console.log('Welcome!  Fetching your information.... ');
+			    FB.api('/me', function(response) {
+			      console.log('Successful login for: ' + response.name);
+			      document.getElementById('status').innerHTML =
+			        'Thanks for logging in, ' + response.name + '!';
+			    }, {scope: 'public_profile, email, user_location'});
+
+			    //this is where I make the call to get user location
+					console.log('Welcome!  Fetching your location information.... ');
+					      FB.api(
+					        '/me',
+					        'GET',
+					        {"fields":"id,name,location"},
+					        function(response) {
+					            console.log(response.location.name);
+					            generate_google_maps(response.location.name);
+					        }
+					      );
+			    //End call to get user location
+			  }
+
+			function generate_google_maps(location){
+				var formatted_location = location.replace(/\s/g, "+");
+				formatted_location = formatted_location.replace(",", "");
+				//console.log(formatted_location);
+
+				var googlemap_html = '\n<iframe'
+				googlemap_html += '\nwidth="600"'
+				googlemap_html += '\nheight="450"'
+				googlemap_html += '\nframeborder="0" style="border:0"'
+				googlemap_html += '\nsrc="https://www.google.com/maps/embed/v1/directions?key=AIzaSyDcS-KJ7Sko-MTXXC3vbbgZm8jFftbUx2I&origin='
+				googlemap_html += formatted_location
+				googlemap_html += '\n&destination=Target+Center" allowfullscreen>'
+				googlemap_html += '\n</iframe>'
+				console.log(googlemap_html);
+				$("#directions").html(googlemap_html);
+			}
+
+			function ask_perms(){
+				FB.login(function(response) {
+								//Asking for location permission
+				}, {scope:'email,user_location'});
+			}
+			</script>
+
+			<!--
+			  Below we include the Login Button social plugin. This button uses
+			  the JavaScript SDK to present a graphical Login button that triggers
+			  the FB.login() function when clicked.
+			-->
+			<p style="font-size: 30px; color:green;"><strong>--- Login to facebook to find directions from your location ---:</strong></p>
+
+			<fb:login-button scope="public_profile,email,user_location" onlogin="checkLoginState();">
+			</fb:login-button>
+			<div id="status">
+			</div>
+
+
+			<div id="directions">
+				
+			</div>
+
+	
+		<!---End of facebook oauth -->
+		<div class="fb-comments" data-href="http://pobv.me/NBATeamTracker/chih.html" data-width="600" data-numposts="5"></div>
+	</center>
+	
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<!-- Include all compiled plugins (below), or include individual files as needed -->
+		<script src="js/bootstrap.min.js"></script>
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	</body>
+</html>
